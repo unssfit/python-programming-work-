@@ -68,7 +68,7 @@ def check_duplicate_numbers_columns():
 def replace_duplicate_numbers_columns(dubplicate_numbrs):
     for i in range(len(dubplicate_numbrs)):
         r = dubplicate_numbrs[i][0]
-        print(r,':',sudoku[int(r[1])][int(r[4])])
+        #print(r,':',sudoku[int(r[1])][int(r[4])])
         nw_num = random.randint(1,9)
         columns = []
         for j in range(len(sudoku)):
@@ -105,32 +105,29 @@ def replace_bigSquare_numbers():
                             for p in range(m+1,len(square_holder[c])):
                                 for k in range(len(square_holder[c][p][1])):
                                     if square_holder[c][m][1][w] == square_holder[c][p][1][k] and square_holder[c][m][1][w] != ' ':
-                                        print(square_holder[c][p][0],':',square_holder[c][p][1][k])
-    
-                                        #code here
-                                        #it work now you need to delete repeted numbers
+                                        #print(square_holder[c][p][0],':',square_holder[c][p][1][k])
+                                        index = sudoku[square_holder[c][p][0]].index(square_holder[c][p][1][k])
+                                        # change the numbers in sudoku
+                                        new_num = random.randint(1,9)
+                                        column = []
+                                        for y in range(len(sudoku)):
+                                            column.append(sudoku[y][index])
+
+                                        # while new_num == square_holder[c][p][1][k]:
+                                        #     new_num = random.randint(1,9)
+
+                                        # while new_num in sudoku[square_holder[c][p][0]] or new_num in column:
+                                        #     new_num = random.randint(1,9)
+                                        #     while new_num == square_holder[c][p][1][k]:
+                                        #         new_num = random.randint(1, 9)
+
+                                        while True:
+                                            new_num = random.randint(1,9)
+                                            if new_num not in sudoku[square_holder[c][p][0]] and new_num not in column and new_num != square_holder[c][p][1][k]:break
+                                        sudoku[square_holder[c][p][0]][index] = new_num
     
                 square_holder[:] = []
         square[:] = []
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# TO DO ==> FUNCTION TO AVOID REPETED NUMBERS IN COLUMNS AFTER REPLACING ROW NUMBERS
-
-
-
-
 
 def fill_sudoku():
     for j in range(len(sudoku)):
@@ -138,17 +135,68 @@ def fill_sudoku():
         string = printSudoku(sudoku[j])
         sudoku_interface(string)
 
+# TO DO START PLAYING NEED GAME LOGIC
+
+def get_empty_indexs():
+    empty_field = []
+    for i in range(len(sudoku)):
+        empty_field.append((i,))
+        for j in range(len(sudoku[i])):
+            if sudoku[i][j] == ' ':
+                empty_field[i] = empty_field[i] + (j,)
+    #print(empty_field)
+    return empty_field
+
+def start_playing_sudoku(arr):
+    for i in range(len(arr)):
+        print('['+str(arr[i][0])+']',end='')
+        for j in range(1,len(arr[i])):
+            print(arr[i][j],end='')
+        print()
+
+    row = int(input('enter wish Row:'))
+    index = int(input('chose wish index you want to play:'))
+    number = int(input('Enter Your Number:'))
+
+    if number in sudoku[row]:
+        print(number,'Already Exist! continue anyway?')
+    else:
+        sudoku[row][index] = number
+
+    # get column
+    column = []
+    for x in range(len(sudoku)):
+        column.append(sudoku[x][index])
+    if number in column:
+        print(number,'already exist in column! continue anyway?')
+
+
+
+    #code here
+    #check if the user input not duplicate in columns
+    #and rows
+
+
+
+
+
+
+
+
+
 fill_sudoku()
 duplicate_nm = check_duplicate_numbers_columns()
 replace_duplicate_numbers_columns(duplicate_nm[:])
-#replace_bigSquare_numbers()
+replace_bigSquare_numbers()
+emptyIndex = get_empty_indexs()
+start_playing_sudoku(emptyIndex[:])
 
 
-
+print('*** GAME START ***')
 for v in range(len(sudoku)):
     string2 = printSudoku(sudoku[v])
     sudoku_interface(string2)
-replace_bigSquare_numbers()
+
 
 
 

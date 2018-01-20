@@ -158,30 +158,19 @@ def start_playing_sudoku(arr):
     index = int(input('chose wish index you want to play:'))
     number = int(input('Enter Your Number:'))
 
-    if number in sudoku[row]:
-        print(number,'Already Exist! continue anyway?')
-    else:
-        sudoku[row][index] = number
-
-    # get column
+    # get Column
     column = []
     for x in range(len(sudoku)):
         column.append(sudoku[x][index])
-    if number in column:
-        print(number,'already exist in column! continue anyway?')
 
-
-
-    #code here
-    #check if the user input not duplicate in columns
-    #and rows
-
-
-
-
-
-
-
+    # Check if the given number already exist
+    while number in sudoku[row] or number in column:
+        if number in sudoku[row]:
+            number = int(input('Already Exist in Row Choose Another Number ("0" to exit):'))
+        else:
+            number = int(input('Already Exist in Column Choose Another Number ("0" to exit):'))
+        if number == 0:break
+    sudoku[row][index] = number
 
 
 fill_sudoku()
